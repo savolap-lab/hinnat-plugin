@@ -1,0 +1,27 @@
+{
+  "name": "hinnat",
+  "displayName": "Hinnat — sähkötukkujen hintavertailu",
+  "version": "2.1.2",
+  "description": "Halvin hinta Onniselta, Soneparilta ja Ahlsellilta suomeksi kysyen, tarjous Exceliin. Laskee koneellasi, hinnastot ja säännöt organisaatiosi yhteisellä palvelimella.",
+  "author": {
+    "name": "Kannas",
+    "email": "pasi@kannas.ai",
+    "url": "https://kannas.ai"
+  },
+  "homepage": "https://hinnat.kannas.ai",
+  "license": "UNLICENSED",
+  "keywords": [
+    "sähkö",
+    "tukku",
+    "hinnat",
+    "tarjous"
+  ],
+  "userConfig": {
+    "key": {
+      "type": "string",
+      "title": "Organisaation avain",
+      "description": "Avain, jonka sait Pasilta (alkaa hk_). Jätä tyhjäksi, jos organisaatiosi admin on jo asettanut sen.",
+      "sensitive": true
+    }
+  }
+}

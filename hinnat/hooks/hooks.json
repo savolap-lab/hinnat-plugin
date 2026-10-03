@@ -1,0 +1,19 @@
+{
+  "description": "Hakee organisaation uusimman hinnaston ja säännöt session alussa. Ei koskaan estä sessiota.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/python/python",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/session_start.py"],
+            "timeout": 420,
+            "statusMessage": "hinnat: haetaan uusin hinnasto ja säännöt…"
+          }
+        ]
+      }
+    ]
+  }
+}

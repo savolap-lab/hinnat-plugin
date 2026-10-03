@@ -1,0 +1,16 @@
+{
+  "name": "hinnat",
+  "owner": {
+    "name": "Kannas",
+    "email": "pasi@kannas.ai",
+    "url": "https://kannas.ai"
+  },
+  "description": "Sähkötukkujen hintavertailu: halvin hinta Onniselta, Soneparilta ja Ahlsellilta, tarjous Exceliin.",
+  "plugins": [
+    {
+      "name": "hinnat",
+      "source": "./hinnat",
+      "description": "Halvin hinta Onniselta, Soneparilta ja Ahlsellilta suomeksi kysyen, tarjous Exceliin. Laskee koneellasi, hinnastot ja säännöt organisaatiosi yhteisellä palvelimella."
+    }
+  ]
+}

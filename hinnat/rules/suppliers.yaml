@@ -1,0 +1,40 @@
+# Vain Onninen: plugin tarkistaa Onnisen saldon käyttäjän koneelta.
+onninen:
+  name: Onninen
+  env_prefix: ONNINEN
+  enabled: true
+  # /login redirects here; going straight to the real URL saves a hop.
+  login_url: https://www.onninen.fi/kirjautuminen
+  # Read off the live page 28.08.2026, each verified to match exactly one
+  # visible element. The previous guesses matched NOTHING and cost a 30 s
+  # timeout every run: the account field is type="text" with no name at all,
+  # so 'input[type="email"], input[name="username"]' could never hit it, and
+  # the page carries several submit buttons of which only one logs in.
+  selectors:
+    username: '#accountId'
+    password: '#password'
+    submit: '[data-test="loginSubmit"]'
+  # The product page IS the stock source. Onninen serves no stock XHR; the
+  # page is server-rendered and carries the availability JSON in the document.
+  # The id is Onninen's own AEK725-style code, held in products.sap for all
+  # 114 946 rows, so nothing extra is needed to address it.
+  product_url: "https://www.onninen.fi/p/{id}"
+  product_id_field: sap
+  # The product page IS the stock source; the id is products.sap.
+  stock_url: "https://www.onninen.fi/p/{id}"
+  stock_id_field: sap
+  stock_source: embedded_json      # lift the payload out of the page document
+  stock_key: availability          # the key the array sits under
+  stock_locations: [DISTRIBUTION_CENTRE]   # keskusvarasto only, not the counter
+  # Monthly price files land in raw/onninen/<YYYY-MM>/
+  raw_dir: onninen
+  netto_glob: "netto*.txt"
+  lista_glob: "lista*.xlsx"
+  netto_format: ovt          # parsers/ovt_netto.py
+  notes: >
+    Fully loaded. 6-character in-house codes, so cross-supplier joins key on
+    EAN. Verified 24.08.2026: there is NO stock XHR — the Fetch/XHR tab
+    carries recommendations and express-shop data only. The keskusvarasto
+    quantity is in the product page document itself, under "availability".
+    See docs/live-stock.md.
+

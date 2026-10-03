@@ -1,0 +1,35 @@
+#!/bin/sh
+# The plugin's own Python, whatever the machine.
+#
+# Windows never reads this file: the hook and PowerShell both resolve
+# ".../python/python" to python.exe beside it (tested 03.10.2026, Bun 1.4 and
+# PowerShell 5.1). Git Bash does run it, hence the Windows branch below.
+# macOS: python-build-standalone for this processor, shipped in mac-arm64/
+# and mac-x64/ (tools/build_plugin.py).
+here=$(cd "$(dirname "$0")" && pwd)
+case "$(uname -s)" in
+  Darwin)
+    case "$(uname -m)" in
+      arm64) py="$here/mac-arm64/bin/python3.14" ;;
+      *)     py="$here/mac-x64/bin/python3.14" ;;
+    esac
+    # A copy that lost its permission bits would otherwise fail with
+    # "permission denied" and no hint why.
+    [ -x "$py" ] || chmod +x "$py" 2>/dev/null
+    # python-build-standalone's OpenSSL looks for certificates in a folder
+    # macOS does not have; the system keeps its bundle here.
+    if [ -z "$SSL_CERT_FILE" ] && [ -f /etc/ssl/cert.pem ]; then
+      SSL_CERT_FILE=/etc/ssl/cert.pem
+      export SSL_CERT_FILE
+    fi
+    # -E -s: a PYTHONHOME or user site-packages left by another install
+    # must not leak into ours.
+    exec "$py" -E -s "$@"
+    ;;
+  MINGW*|MSYS*|CYGWIN*)
+    exec "$here/python.exe" "$@"
+    ;;
+  *)
+    exec python3 "$@"
+    ;;
+esac
